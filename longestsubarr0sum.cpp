@@ -1,17 +1,20 @@
 #include <bits/stdc++.h>
 
-vector<vector<int>> pairSum(vector<int> &arr, int s){
-   vector<vector<int>> ans;
-   unordered_map<int,int> m;
-   for(auto num : arr){
-      if(m.find(s-num)!=m.end()) {
-         int x = m[s-num];
-         while(x--){
-            ans.push_back({min(num, s - num), max(num, s - num)});
-         }
-      }
-      m[num]++;
-   }
-   sort(ans.begin(),ans.end());
-   return ans;
+int LongestSubsetWithZeroSum(vector < int > nums) {
+  unordered_map<int,int> m;
+  int k = 0;
+    int l = 0,prefixsum = 0;
+    for(int i = 0;i<nums.size();i++){
+        prefixsum += nums[i];
+        if(prefixsum == k){
+            l = max(l,i+1);
+        }
+        if(m.find(prefixsum - k)!=m.end()){
+            l = max(l,i - m[prefixsum-k]);
+        }
+        if(m.find(prefixsum)==m.end()) m[prefixsum] = i;
+    }
+    return l;
+
 }
+
