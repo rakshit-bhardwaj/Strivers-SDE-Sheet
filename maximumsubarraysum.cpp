@@ -8,7 +8,6 @@ long long maxSubarraySum(int arr[], int n)
         cur += arr[i];
         if(cur < 0) cur = 0;
         ans = max(cur,ans);
-        ans = max(ans,(long long) arr[i]);
     }
     return ans;
 }
