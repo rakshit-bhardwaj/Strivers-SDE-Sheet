@@ -1,23 +1,50 @@
-void findinorder(BinaryTreeNode<int> *node,vector<int> &inorder){
-    if(node==NULL) return;
-    findinorder(node->left,inorder);
-    inorder.push_back(node->data);
-    findinorder(node->right,inorder);
-}
+#include <bits/stdc++.h> 
+class BSTIterator {
+    stack<BinaryTreeNode<int> *> myStack;
+    bool reverse = true; 
+public:
+    BSTIterator(BinaryTreeNode<int> *root, bool isReverse) {
+        reverse = isReverse; 
+        pushAll(root);
+    }
+
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !myStack.empty();
+    }
+
+    /** @return the next smallest number */
+    int next() {
+        BinaryTreeNode<int> *tmpNode = myStack.top();
+        myStack.pop();
+        if(!reverse) pushAll(tmpNode->right);
+        else pushAll(tmpNode->left);
+        return tmpNode->data;
+    }
+
+private:
+    void pushAll(BinaryTreeNode<int> *node) {
+        for(;node != NULL; ) {
+             myStack.push(node);
+             if(reverse == true) {
+                 node = node->right; 
+             } else {
+                 node = node->left; 
+             }
+        }
+    }
+};
 
 bool pairSumBst(BinaryTreeNode<int> *root, int k)
 {
-    vector<int> inorder;
-    findinorder(root,inorder);
-    for(int i =0;i<inorder.size()-1;i++){
-        int x = k - inorder[i];
-        int s = i+1,e = inorder.size()-1;
-        while(s<=e){
-            int m = (s+e) >> 1;
-            if(inorder[m]== x) return true;
-            if(inorder[m] > x) e = m-1;
-            else s = m+1;
-        }
+    BSTIterator l(root,false),r(root,true);
+    int i = l.next();
+    int j = r.next();
+
+    while(i<j){
+        if(i+j==k) return true;
+        if(i+j < k) i = l.next();
+        else j = r.next(); 
     }
     return false;
 }
