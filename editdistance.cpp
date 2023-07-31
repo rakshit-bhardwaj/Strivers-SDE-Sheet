@@ -1,4 +1,6 @@
-vector<vector<int>> dp(str1.size()+1,vector<int>(str2.size()+1,0));
+int editDistance(string str1, string str2)
+{
+    vector<vector<int>> dp(str1.size()+1,vector<int>(str2.size()+1,0));
         for(int i = 0;i<=str1.size();i++) dp[i][0] = i;
         for(int j = 0;j<=str2.size();j++) dp[0][j] = j;
 
@@ -14,3 +16,4 @@ vector<vector<int>> dp(str1.size()+1,vector<int>(str2.size()+1,0));
             }
         }
         return dp[str1.size()][str2.size()];
+}
