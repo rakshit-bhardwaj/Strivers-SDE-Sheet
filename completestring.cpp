@@ -45,10 +45,10 @@ public:
 		node->setEnd();
 	}
 
-	bool search(string word) {
+    bool search(string word) {
 		Node *node = root;
 		for (int i = 0; i < word.size(); i++) {
-			if (!node->containKey(word[i])) {
+			if (!node->containKey(word[i]) || (i!=0 && !node->isEnd())) {
 				return false;
 			}
 			node = node->get(word[i]);
@@ -66,18 +66,9 @@ string completeString(int n, vector<string> &a){
     Trie tri;
 
     for(int i =0;i<n;i++) tri.insert(a[i]);
-    
-    for(int i =0;i<n;i++){
-        bool check = true;
-        for(int j =1;j<a[i].size();j++){
-            if(!tri.search(a[i].substr(0,j))){
-                check = false;
-                break;
-            }
-        }
-        if(check) return a[i];
+
+    for(int i =0;i<n;i++) if(tri.search(a[i])) return a[i];
         
-    }
 
     return "None";
 }
